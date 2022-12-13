@@ -11,6 +11,7 @@ const Color kLightOrange = Color(0xffFEECE5);
 const Color kBlack = Color(0xff3E3D50);
 
 const double kPaddingHorizontal = 30.0;
+const double kBorderRadiusList = 11;
 
 final kSourceSansProBold = GoogleFonts.sourceSansPro(
   fontWeight: FontWeight.w700,

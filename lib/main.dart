@@ -4,7 +4,7 @@ import 'package:luckypet/app_styles.dart';
 import 'package:luckypet/size_config.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: HomeScreen(),
@@ -121,7 +121,51 @@ class HomeScreen extends StatelessWidget {
                     ))
               ],
             ),
-          )
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Container(
+            height: 30,
+            padding: const EdgeInsets.symmetric(horizontal: kPaddingHorizontal),
+            child: Row(children: [
+              Text(
+                "Dogs",
+                style: kSourceSansProBold.copyWith(
+                    fontSize: SizeConfig.blockSizeHorizontal! * 6),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                "🐕",
+                style: kSourceSansProBold.copyWith(
+                    fontSize: SizeConfig.blockSizeHorizontal! * 3),
+              ),
+            ]),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          SizedBox(
+              height: 169,
+              child: ListView.builder(
+                  itemCount: 10,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: 169,
+                      width: 150,
+                      margin: EdgeInsets.only(
+                        left: index == 0 ? 30 : 15,
+                        right: index == 10 - 1 ? 30 : 0,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(kBorderRadiusList),
+                        color: kRed,
+                      ),
+                    );
+                  }))
         ],
       ),
     );
