@@ -7,15 +7,49 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: HomeScreen(),
+        body: const HomeScreen(),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: kWhite,
+          items: [
+            BottomNavigationBarItem(
+                icon: _selectedIndex == 0
+                    ? SvgPicture.asset("assets/home_selected.svg")
+                    : SvgPicture.asset("assets/home_unselected.svg"),
+                label: ""),
+            BottomNavigationBarItem(
+                icon: _selectedIndex == 1
+                    ? SvgPicture.asset("assets/cart_selected.svg")
+                    : SvgPicture.asset("assets/cart_unselected.svg"),
+                label: ""),
+            BottomNavigationBarItem(
+                icon: _selectedIndex == 2
+                    ? SvgPicture.asset("assets/profile_selected.svg")
+                    : SvgPicture.asset("assets/profile_unselected.svg"),
+                label: ""),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
@@ -27,6 +61,12 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
+    List<String> dogs = ["dog_marley.png", "dog_cocoa.png", "dog_walt.png"];
+    List<String> dogs_name = ["Marly", "Cocoa", "Walt"];
+    List<String> cats = ["cat_alyx.png", "cat_brook.png", "cat_marly.png"];
+    List<String> cats_name = ["Alyx", "Brook", "Marly"];
+
     return SafeArea(
       child: ListView(
         children: [
@@ -125,6 +165,7 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
+          //Dogs
           Container(
             height: 30,
             padding: const EdgeInsets.symmetric(horizontal: kPaddingHorizontal),
@@ -150,7 +191,7 @@ class HomeScreen extends StatelessWidget {
           SizedBox(
               height: 169,
               child: ListView.builder(
-                  itemCount: 10,
+                  itemCount: dogs.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return Container(
@@ -158,14 +199,227 @@ class HomeScreen extends StatelessWidget {
                       width: 150,
                       margin: EdgeInsets.only(
                         left: index == 0 ? 30 : 15,
-                        right: index == 10 - 1 ? 30 : 0,
+                        right: index == dogs.length - 1 ? 30 : 0,
                       ),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(kBorderRadiusList),
-                        color: kRed,
-                      ),
+                          borderRadius:
+                              BorderRadius.circular(kBorderRadiusList),
+                          color: kWhite,
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 14,
+                                offset: const Offset(0, 3),
+                                color: kBoxShadowColor.withOpacity(0.18)),
+                          ]),
+                      child: Column(children: [
+                        SizedBox(
+                          height: 80,
+                          width: 150,
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(kBorderRadiusList),
+                            child: Image.asset(
+                              "assets/images/${dogs[index]}",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: SizeConfig.blockSizeVertical! * 2,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.5),
+                                  color: kLightOrange),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text("BANANA",
+                                    style: kSourceSansProBold.copyWith(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal! * 2.5,
+                                      color: kOrange,
+                                    )),
+                              ),
+                            ),
+                            const Icon(
+                              Icons.favorite_outline,
+                              color: kRed,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              dogs_name[index],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: kSourceSansProBold.copyWith(
+                                fontSize: SizeConfig.blockSizeHorizontal! * 3,
+                                color: kGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "17 jun 2021",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: kSourceSansProregular.copyWith(
+                                fontSize: SizeConfig.blockSizeHorizontal! * 2,
+                                color: kLightGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]),
                     );
-                  }))
+                  })),
+          const SizedBox(
+            height: 30,
+          ),
+
+          //Cats
+          Container(
+            height: 30,
+            padding: const EdgeInsets.symmetric(horizontal: kPaddingHorizontal),
+            child: Row(children: [
+              Text(
+                "Cats",
+                style: kSourceSansProBold.copyWith(
+                    fontSize: SizeConfig.blockSizeHorizontal! * 6),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                "🐈",
+                style: kSourceSansProBold.copyWith(
+                    fontSize: SizeConfig.blockSizeHorizontal! * 3),
+              ),
+            ]),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          SizedBox(
+              height: 169,
+              child: ListView.builder(
+                  itemCount: cats.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: 169,
+                      width: 150,
+                      margin: EdgeInsets.only(
+                        left: index == 0 ? 30 : 15,
+                        right: index == cats.length - 1 ? 30 : 0,
+                      ),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.circular(kBorderRadiusList),
+                          color: kWhite,
+                          boxShadow: [
+                            BoxShadow(
+                                blurRadius: 14,
+                                offset: const Offset(0, 3),
+                                color: kBoxShadowColor.withOpacity(0.18)),
+                          ]),
+                      child: Column(children: [
+                        SizedBox(
+                          height: 80,
+                          width: 150,
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(kBorderRadiusList),
+                            child: Image.asset(
+                              "assets/images/${cats[index]}",
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              height: SizeConfig.blockSizeVertical! * 2,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.5),
+                                  color: kLightOrange),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Center(
+                                child: Text("BANANA",
+                                    style: kSourceSansProBold.copyWith(
+                                      fontSize:
+                                          SizeConfig.blockSizeHorizontal! * 2.5,
+                                      color: kOrange,
+                                    )),
+                              ),
+                            ),
+                            const Icon(
+                              Icons.favorite_outline,
+                              color: kRed,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              cats_name[index],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: kSourceSansProBold.copyWith(
+                                fontSize: SizeConfig.blockSizeHorizontal! * 3,
+                                color: kGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 3,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "17 jun 2021",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: kSourceSansProregular.copyWith(
+                                fontSize: SizeConfig.blockSizeHorizontal! * 2,
+                                color: kLightGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]),
+                    );
+                  })),
+          const SizedBox(
+            height: 30,
+          )
         ],
       ),
     );
